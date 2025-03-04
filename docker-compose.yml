@@ -100,7 +100,7 @@ services:
       - TZ=Europe/Paris
     volumes:
       - ./nzbget:/config
-      - ./nzbget/downloads:/downloads #optional
+      - ${MEDIA_STORAGE_PATH}/nzbget/downloads:/downloads #optional
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 6789:6789
