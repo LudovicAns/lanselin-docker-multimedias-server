@@ -6,6 +6,8 @@ services:
       - 80:80
       - 443:443
       - 81:81
+    networks:
+      - medias_network
     volumes:
       - ./nginx-proxy-manager/data:/data
       - ./nginx-proxy-manager/letsencrypt:/etc/letsencrypt
@@ -35,6 +37,8 @@ services:
       - TZ=Europe/Paris
     ports:
       - 5055:5055
+    networks:
+      - medias_network
     volumes:
       - ./jellyseerr:/app/config
     restart: unless-stopped
