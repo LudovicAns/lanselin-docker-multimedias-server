@@ -24,7 +24,7 @@ services:
       - ./plex/library:/config
       - ./plex/tvseries:/tv
       - ./plex/movies:/movies
-      - medias_storage:/mnt/medias
+      - ${MEDIA_STORAGE_PATH}:/mnt/medias
     restart: unless-stopped
 
   jellyseerr:
@@ -47,7 +47,7 @@ services:
       - PGID=1000
       - TZ=Europe/Paris
     volumes:
-      - medias_storage:/mnt/medias
+      - ${MEDIA_STORAGE_PATH}:/mnt/medias
       - ./prowlarr:/config
     ports:
       - 9696:9696
@@ -66,7 +66,7 @@ services:
       - ./sonarr:/config
       - ./sonarr/tv:/tv #optional
       - ./sonarr/downloads:/downloads #optional
-      - medias_storage:/mnt/medias
+      - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 8989:8989
     networks:
@@ -84,7 +84,7 @@ services:
       - ./radarr:/config
       - ./radarr/movies:/movies #optional
       - ./radarr/downloads:/downloads #optional
-      - medias_storage:/mnt/medias
+      - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 7878:7878
     networks:
@@ -101,20 +101,12 @@ services:
     volumes:
       - ./nzbget:/config
       - ./nzbget/downloads:/downloads #optional
-      - medias_storage:/mnt/medias
+      - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 6789:6789
     networks:
       - medias_network
     restart: unless-stopped
-
-volumes:
-  medias_storage:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${MEDIA_STORAGE_PATH}
 
 networks:
   medias_network:

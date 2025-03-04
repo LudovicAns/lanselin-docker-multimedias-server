@@ -32,7 +32,7 @@ Ce projet Docker Compose contient une configuration pour déployer une infrastru
     - `./plex/library:/config` : Configuration du serveur Plex.
     - `./plex/tvseries:/tv` : Séries.
     - `./plex/movies:/movies` : Films.
-    - `medias_storage:/mnt/medias` : Stockage des médias.
+    - `${MEDIA_STORAGE_PATH}:/mnt/medias` : Stockage des médias.
 - **Redémarrage** : `unless-stopped`
 
 ### 3. **Jellyseerr**
@@ -61,7 +61,7 @@ Ce projet Docker Compose contient une configuration pour déployer une infrastru
     - `TZ`: Fuseau horaire.
 - **Volumes** :
     - `./prowlarr:/config` : Configuration de Prowlarr.
-    - `medias_storage:/mnt/medias` : Accès aux médias.
+    - `${MEDIA_STORAGE_PATH}:/mnt/medias` : Accès aux médias.
 - **Réseaux** :
     - `medias_network`
 - **Redémarrage** : `unless-stopped`
@@ -81,7 +81,7 @@ Ce projet Docker Compose contient une configuration pour déployer une infrastru
     - `./sonarr:/config` : Configuration de Sonarr.
     - `./sonarr/tv:/tv`: Dossier pour les séries (optionnel).
     - `./sonarr/downloads:/downloads`: Téléchargements (optionnel).
-    - `medias_storage:/mnt/medias` : Accès aux médias.
+    - `${MEDIA_STORAGE_PATH}:/mnt/medias` : Accès aux médias.
 - **Réseaux** :
     - `medias_network`
 - **Redémarrage** : `unless-stopped`
@@ -101,7 +101,7 @@ Ce projet Docker Compose contient une configuration pour déployer une infrastru
     - `./radarr:/config` : Configuration de Radarr.
     - `./radarr/movies:/movies`: Dossier pour les films (optionnel).
     - `./radarr/downloads:/downloads`: Téléchargements (optionnel).
-    - `medias_storage:/mnt/medias` : Accès aux médias.
+    - `${MEDIA_STORAGE_PATH}:/mnt/medias` : Accès aux médias.
 - **Réseaux** :
     - `medias_network`
 - **Redémarrage** : `unless-stopped`
@@ -119,16 +119,12 @@ Ce projet Docker Compose contient une configuration pour déployer une infrastru
 - **Volumes** :
     - `./nzbget:/config` : Configuration de Nzbget.
     - `./nzbget/downloads:/downloads`: Téléchargements (optionnel).
-    - `medias_storage:/mnt/medias` : Accès aux médias.
+    - `${MEDIA_STORAGE_PATH}:/mnt/medias` : Accès aux médias.
 - **Réseaux** :
     - `medias_network`
 - **Redémarrage** : `unless-stopped`
 
 ---
-
-## Volumes
-
-- **`medias_storage`** : Volume utilisé pour le stockage de données multimédias, configuré via la variable d'environnement `MEDIA_STORAGE_PATH`. Ce volume est attaché à plusieurs conteneurs nécessaires pour accéder aux fichiers médias.
 
 ---
 
