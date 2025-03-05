@@ -3,10 +3,6 @@ services:
   nginx-proxy-manager:
     image: jlesage/nginx-proxy-manager
     container_name: nginx-proxy-manager
-    ports:
-      - 8080:8080
-      - 4443:4443
-      - 8181:8181
     network_mode: host
     environment:
       - PUID=1000
