@@ -7,8 +7,7 @@ services:
       - 8080:8080
       - 4443:4443
       - 8181:8181
-    networks:
-      - medias_network
+    network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
@@ -20,8 +19,7 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    networks:
-      - medias_network
+    network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
@@ -42,8 +40,7 @@ services:
       - TZ=Europe/Paris
     ports:
       - 5055:5055
-    networks:
-      - medias_network
+    network_mode: host
     volumes:
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
       - ./jellyseerr:/app/config
@@ -61,8 +58,7 @@ services:
       - ./prowlarr:/config
     ports:
       - 9696:9696
-    networks:
-      - medias_network
+    network_mode: host
     restart: unless-stopped
 
   sonarr:
@@ -79,8 +75,7 @@ services:
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 8989:8989
-    networks:
-      - medias_network
+    network_mode: host
     restart: unless-stopped
 
   radarr:
@@ -97,8 +92,7 @@ services:
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 7878:7878
-    networks:
-      - medias_network
+    network_mode: host
     restart: unless-stopped
 
   nzbget:
@@ -114,10 +108,5 @@ services:
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 6789:6789
-    networks:
-      - medias_network
+    network_mode: host
     restart: unless-stopped
-
-networks:
-  medias_network:
-    driver: bridge
