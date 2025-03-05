@@ -20,7 +20,8 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    network_mode: host
+    networks:
+      - medias_network
     environment:
       - PUID=1000
       - PGID=1000
@@ -44,6 +45,7 @@ services:
     networks:
       - medias_network
     volumes:
+      - ${MEDIA_STORAGE_PATH}:/mnt/medias
       - ./jellyseerr:/app/config
     restart: unless-stopped
 
