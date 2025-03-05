@@ -1,23 +1,5 @@
 services:
 
-  nginx-proxy-manager:
-    image: jc21/nginx-proxy-manager:v3
-    container_name: nginx-proxy-manager
-    ports:
-      - 80:80
-      - 443:443
-      - 81:81
-    networks:
-      - medias_network
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Paris
-    volumes:
-      - ./nginx-proxy-manager/data:/data
-      - ./nginx-proxy-manager/letsencrypt:/etc/letsencrypt
-    restart: unless-stopped
-
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
