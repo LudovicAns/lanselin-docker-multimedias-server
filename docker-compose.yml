@@ -1,15 +1,21 @@
 services:
 
   nginx-proxy-manager:
-    image: jlesage/nginx-proxy-manager
+    image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
-    network_mode: host
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    networks:
+      - medias_network
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
     volumes:
-      - ./nginx-proxy-manager:/config
+      - ./nginx-proxy-manager/data:/data
+      - ./nginx-proxy-manager/letsencrypt:/etc/letsencrypt
     restart: unless-stopped
 
   plex:
@@ -36,9 +42,9 @@ services:
       - TZ=Europe/Paris
     ports:
       - 5055:5055
-    network_mode: host
+    networks:
+      - medias_network
     volumes:
-      - ${MEDIA_STORAGE_PATH}:/mnt/medias
       - ./jellyseerr:/app/config
     restart: unless-stopped
 
@@ -54,7 +60,8 @@ services:
       - ./prowlarr:/config
     ports:
       - 9696:9696
-    network_mode: host
+    networks:
+      - medias_network
     restart: unless-stopped
 
   sonarr:
@@ -71,7 +78,8 @@ services:
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 8989:8989
-    network_mode: host
+    networks:
+      - medias_network
     restart: unless-stopped
 
   radarr:
@@ -88,7 +96,8 @@ services:
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 7878:7878
-    network_mode: host
+    networks:
+      - medias_network
     restart: unless-stopped
 
   nzbget:
@@ -104,5 +113,10 @@ services:
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 6789:6789
-    network_mode: host
+    networks:
+      - medias_network
     restart: unless-stopped
+
+networks:
+  medias_network:
+    driver: bridge
