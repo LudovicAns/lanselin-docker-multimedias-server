@@ -1,4 +1,16 @@
+# IDEs
 .idea
 *.iml
 
+# Environement
 .env
+
+# Docker volumes
+jellyseerr/
+monitoring/
+nginx-proxy-manager/
+nzbget/
+plex/
+prowlarr/
+radarr/
+sonarr/
