@@ -43,7 +43,7 @@ services:
     environment:
       - TZ=Europe/Paris
       - VERSION=docker
-      - PLEX_CLAIM=claim-1FvFJbk6kxJ39HSPpR8-
+      - PLEX_CLAIM={PLEX_CLAIM}
     volumes:
       - ./plex/library:/config
       - ./plex/tvseries:/tv
