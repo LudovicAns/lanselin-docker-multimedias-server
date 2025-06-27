@@ -111,6 +111,58 @@ services:
       - medias_network
     restart: unless-stopped
 
+  calibre:
+    image: ghcr.io/linuxserver/calibre
+    container_name: calibre
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - ./calibre/config:/config
+      - ${MEDIA_STORAGE_PATH}/books/CalibreLibrary:/Calibre_Library
+    ports:
+      - 8080:8080
+      - 8181:8181
+      - 8081:8081
+      - 9090:9090
+    networks:
+      - medias_network
+    restart: unless-stopped
+
+  calibre-web:
+    image: linuxserver/calibre-web:nightly
+    container_name: calibre-web
+    environment:
+      - TZ=Europe/Paris
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
+      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
+    volumes:
+      - ./calibre-web/config:/config
+      - ${MEDIA_STORAGE_PATH}/books/CalibreLibrary:/books
+    ports:
+      - 8083:8083
+    networks:
+      - medias_network
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    depends_on:
+      - calibre
+      - calibre-web
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - ./readarr:/config
+      - ./readarr/books:/books
+      - ./readarr/downloads:/downloads
+      - ${MEDIA_STORAGE_PATH}:/mnt/medias
+    ports:
+      - 8787:8787
+    networks:
+      - medias_network
+    restart: unless-stopped
+
   nzbget:
     image: lscr.io/linuxserver/nzbget:latest
     container_name: nzbget
