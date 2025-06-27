@@ -1,5 +1,21 @@
 services:
 
+  vault-warden:
+    image: vaultwarden/server:latest
+    container_name: vault-warden
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${VAULT_DOMAIN}
+      WEBSOCKET_ENABLED: 'true'                       # Pour notifications en temps réel
+      SIGNUPS_ALLOWED: 'true'                        # Empêche la création de comptes publics
+      ADMIN_TOKEN: ${VAULT_WARDEN_ADMIN_TOKEN}        # Token pour accéder au panneau admin (/admin)
+    volumes:
+      - ./vault-warden:/data
+    ports:
+      - "8089:80"
+    networks:
+      - medias_network
+
   netdata:
     image: netdata/netdata:latest
     container_name: netdata
