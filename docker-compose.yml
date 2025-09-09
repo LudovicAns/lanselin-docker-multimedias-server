@@ -1,20 +1,19 @@
 services:
 
-  vault-warden:
-    image: vaultwarden/server:latest
-    container_name: vault-warden
-    restart: unless-stopped
-    environment:
-      DOMAIN: ${VAULT_DOMAIN}
-      WEBSOCKET_ENABLED: 'true'                       # Pour notifications en temps réel
-      SIGNUPS_ALLOWED: 'true'                        # Empêche la création de comptes publics
-      ADMIN_TOKEN: ${VAULT_WARDEN_ADMIN_TOKEN}        # Token pour accéder au panneau admin (/admin)
-    volumes:
-      - ./vault-warden:/data
+  wallos:
+    container_name: wallos
+    image: bellamy/wallos:latest
     ports:
-      - "8089:80"
+      - "8282:80/tcp"
+    environment:
+      TZ: 'Europe/Paris'
+    # Volumes store your data between container upgrades
+    volumes:
+      - './wallos/db:/var/www/html/db'
+      - './wallos/logos:/var/www/html/images/uploads/logos'
     networks:
       - medias_network
+    restart: unless-stopped
 
   netdata:
     image: netdata/netdata:latest
@@ -123,58 +122,6 @@ services:
       - ${MEDIA_STORAGE_PATH}:/mnt/medias
     ports:
       - 7878:7878
-    networks:
-      - medias_network
-    restart: unless-stopped
-
-  calibre:
-    image: ghcr.io/linuxserver/calibre
-    container_name: calibre
-    environment:
-      - TZ=Europe/Paris
-    volumes:
-      - ./calibre/config:/config
-      - ${MEDIA_STORAGE_PATH}/books/CalibreLibrary:/Calibre_Library
-    ports:
-      - 8080:8080
-      - 8181:8181
-      - 8081:8081
-      - 9090:9090
-    networks:
-      - medias_network
-    restart: unless-stopped
-
-  calibre-web:
-    image: linuxserver/calibre-web:nightly
-    container_name: calibre-web
-    environment:
-      - TZ=Europe/Paris
-      - DOCKER_MODS=linuxserver/mods:universal-calibre
-      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
-    volumes:
-      - ./calibre-web/config:/config
-      - ${MEDIA_STORAGE_PATH}/books/CalibreLibrary:/books
-    ports:
-      - 8083:8083
-    networks:
-      - medias_network
-    restart: unless-stopped
-
-  readarr:
-    image: lscr.io/linuxserver/readarr:develop
-    container_name: readarr
-    depends_on:
-      - calibre
-      - calibre-web
-    environment:
-      - TZ=Europe/Paris
-    volumes:
-      - ./readarr:/config
-      - ./readarr/books:/books
-      - ./readarr/downloads:/downloads
-      - ${MEDIA_STORAGE_PATH}:/mnt/medias
-    ports:
-      - 8787:8787
     networks:
       - medias_network
     restart: unless-stopped
